@@ -13,6 +13,8 @@ extern "C" {
 #include "scripting/lua-bindings/manual/CCLuaEngine.h"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
 
+#include "xxhash/xxhash.h"
+
 USING_NS_CC;
 
 static int lua_loadCode(lua_State *L)
@@ -62,9 +64,46 @@ static int lua_captureNode(lua_State *L)
 	return 0;
 }
 
+int lua_messageBox(lua_State *L) {
+    int argc = lua_gettop(L);
+    if (argc > 0) {
+        const char* msg = luaL_checkstring(L, 1);
+        const char* title = argc > 1 ? luaL_checkstring(L, 2) : "";
+        cocos2d::MessageBox(msg, title);
+    }
+    return 0;
+}
+
+std::string bin2hex(unsigned char* bin, size_t l) {
+    static const char* hextable = "0123456789abcdef";
+    std::string hex;
+    hex.resize(l * 2);
+    int ci = 0;
+    for (int i = 0; i < l; ++i) {
+        unsigned char c = bin[i];
+        hex[ci++] = hextable[(c >> 4) & 0x0f];
+        hex[ci++] = hextable[c & 0x0f];
+    }
+    return hex;
+}
+int lua_xxhash(lua_State *L) {
+    int argc = lua_gettop(L);
+    if (argc > 0) {
+        size_t input_l = 0;
+        const char* input = luaL_checklstring(L, 1, &input_l);
+        auto output = XXH32(input, input_l, 0);
+        std::string hex = bin2hex((unsigned char*)&output, sizeof(output));
+        lua_pushlstring(L, hex.c_str(), hex.length());
+        return 1;
+    }
+    return 0;
+}
+
 static const struct luaL_Reg extension_lib[] = {
 	{ "loadFile", lua_loadCode },
 	{ "captureNode", lua_captureNode },
+    { "messageBox", lua_messageBox },
+    { "hash", lua_xxhash },	
 	{ NULL, NULL},
 };
 
