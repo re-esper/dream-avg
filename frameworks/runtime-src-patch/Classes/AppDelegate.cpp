@@ -30,9 +30,10 @@
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 #include "LuaConsole.h"
 #endif
+#include "lua_cocos2dx_extend_manual.hpp"
 #include "lua_extension.h"
 
-// #define USE_AUDIO_ENGINE 1
+#define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
 // #define USE_LIVE2D_SPRITE 1
@@ -65,7 +66,8 @@ AppDelegate::AppDelegate()
 AppDelegate::~AppDelegate()
 {
 #if USE_AUDIO_ENGINE
-    AudioEngine::end();
+    // Comment out the following because https://github.com/cocos2d/cocos2d-x/issues/17782
+    //AudioEngine::end();
 #elif USE_SIMPLE_AUDIO_ENGINE
     SimpleAudioEngine::end();
 #endif
@@ -106,6 +108,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
     lua_State* L = engine->getLuaStack()->getLuaState();
     lua_module_register(L);
+    register_cocos2dx_extend_manual(L);
     register_extension_lib(L);
 
 #if USE_LIVE2D_SPRITE
