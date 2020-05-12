@@ -1038,14 +1038,14 @@ void RichText::stopSpawn()
 void RichText::resumeSpawn()
 {
     if (_spawnIndex < _spawnNodes.size() && !_isSpawning) {
-        float interval = 1.0f / _spawnSpeed;        
+        float interval = 1.0f / _spawnSpeed;
         schedule(bind(&RichText::_spawnFunc, this, std::placeholders::_1), interval, -1, 0, "RichText_spawnFunc");
         _isSpawning = true;
     }
 }
 
 void RichText::setSpawnSpeed(float speed)
-{    
+{
     _spawnSpeed = speed;
     if (_isSpawning) {
         unschedule("RichText_spawnFunc");
@@ -1065,6 +1065,8 @@ void RichText::clear()
     
 	_richElements.clear();
     _spawnNodes.clear();
+
+    _formatTextDirty = true;
 }
 
 void RichText::insertElement(RichElement *element, int index)
