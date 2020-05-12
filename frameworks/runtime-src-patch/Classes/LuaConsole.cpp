@@ -16,19 +16,24 @@ LuaConsole* LuaConsole::getInstance()
 void LuaConsole::init()
 {
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+    AllocConsole();
+    freopen("CONIN$", "r", stdin);
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
+
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
 	if (h) {
-		SMALL_RECT sr = { 0, 0, 100 - 1, 48 - 1 };
-		SetConsoleWindowInfo(h, TRUE, &sr);
+        SMALL_RECT sr = { 0, 0, 100 - 1, 48 - 1 };
+        SetConsoleWindowInfo(h, TRUE, &sr);
 
-		COORD c = { 100, 4096 };
-		SetConsoleScreenBufferSize(h, c);
+        COORD c = { 100, 4096 };
+        SetConsoleScreenBufferSize(h, c);
 
-		HWND con = GetConsoleWindow();
-		RECT r = { 0 };
-		GetWindowRect(con, &r);	
-		MoveWindow(con, 0, r.top, 1500, r.bottom - r.top, TRUE);
-	}
+        HWND con = GetConsoleWindow();
+        RECT r = { 0 };
+        GetWindowRect(con, &r);
+        MoveWindow(con, 0, r.top, 1200, 800, TRUE);
+    }
 #endif
 }
 
@@ -39,6 +44,7 @@ bool is_empty_code(std::string &s)
 	s.erase(s.find_last_not_of(" ") + 1);
 	return s.empty();
 }
+
 int LuaConsole::proc()
 {
 	_running = true;

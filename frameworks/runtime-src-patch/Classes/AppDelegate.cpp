@@ -29,6 +29,7 @@
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 #include "LuaConsole.h"
+#include <direct.h>
 #endif
 #include "lua_cocos2dx_extend_manual.hpp"
 #include "lua_extension.h"
@@ -118,12 +119,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     register_all_packages();
 
+    processCommandLine();
+
     LuaStack* stack = engine->getLuaStack();
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-
-#if COCOS2D_DEBUG > 0 && CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-    LuaConsole::getInstance()->run();
-#endif
 
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
@@ -166,4 +165,62 @@ void AppDelegate::applicationWillEnterForeground()
     SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
     SimpleAudioEngine::getInstance()->resumeAllEffects();
 #endif
+}
+
+void AppDelegate::processCommandLine()
+{
+    std::vector<std::string> args;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+    for (int i = 0; i < __argc; ++i) {
+        std::wstring ws(__wargv[i]);
+        std::string s;
+        s.assign(ws.begin(), ws.end());
+        args.push_back(s);
+    }
+#elif CC_TARGET_PLATFORM == CC_PLATFORM_MAC
+#endif
+    auto L = LuaEngine::getInstance()->getLuaStack()->getLuaState();
+    lua_newtable(L);
+    if (args.size() >= 2) {
+        auto itr = args.begin();
+        while (itr != args.end()) {
+            std::string arg = *itr;
+            if (arg == "-workdir") {
+                ++itr;
+                if (itr == args.end()) break;
+                FileUtils::getInstance()->setDefaultResourceRootPath(*itr);
+                FileUtils::getInstance()->setWritablePath(*itr);
+            }
+            else if (arg.compare("-resolution") == 0) {
+                ++itr;
+                if (itr == args.end()) break;
+                const string& sizeStr(*itr);
+                size_t pos = sizeStr.find('x');
+                int width = 0;
+                int height = 0;
+                if (pos != sizeStr.npos && pos > 0) {
+                    string widthStr, heightStr;
+                    widthStr.assign(sizeStr, 0, pos);
+                    heightStr.assign(sizeStr, pos + 1, sizeStr.length() - pos);
+                    width = atoi(widthStr.c_str());
+                    height = atoi(heightStr.c_str());
+                    lua_pushinteger(L, width);
+                    lua_setfield(L, -2, "width");
+                    lua_pushinteger(L, height);
+                    lua_setfield(L, -2, "height");
+                }
+            }
+            else if (arg.compare("--fullscreen") == 0) {
+                lua_pushboolean(L, TRUE);
+                lua_setfield(L, -2, "fullscreen");
+            }
+            else if (arg.compare("--console") == 0) {
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+                LuaConsole::getInstance()->run();
+#endif
+            }
+            ++itr;
+        }
+    }
+    lua_setglobal(L, "CONFIG_SIMULATOR");
 }
