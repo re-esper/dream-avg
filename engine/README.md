@@ -1,2 +1,3 @@
 ## dream-avg engine core
-依赖我的不同于官方的lua-framework代码: https://github.com/re-esper/cocos2d-lua-framework
+渚濊禆鎴戠殑 lua-framework 浠ｇ爜: https://github.com/re-esper/cocos2d-lua-framework
+
