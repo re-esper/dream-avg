@@ -99,9 +99,9 @@ wait(function() return 舞:getNumberOfRunningActions() == 0 end)
 wait(0.2)
 舞:startMotion("Idle", 0, 3)
 舞 "${我.lastName}，你要回去了喔？棒球队呢？"
-我 "我之前不是说过我退队了吗？"
 舞:startMotion("TurnSmile", 0, 3)
 舞:runAction(delay { 4.0 }) -- for measuring the live2d motion
+我 "我之前不是说过我退队了吗？"
 舞 "啊~~好像是有这么一回事喔。\n啊哈哈，我忘了耶。"
 wait(function() return 舞:getNumberOfRunningActions() == 0 end)
 _ "少女愉快地笑着。"
