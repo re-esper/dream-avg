@@ -9,7 +9,7 @@ function novelFunc.background(imageFile, duration)
     end
     novel._background = cc.Sprite:create(imageFile):position(video.center):scale("full"):addTo(novel._backLayer)
     novel._backgroundFile = imageFile
-    -- hide all charactors if switching background
+    -- hide all characters if switching background
     local children = novel._actorLayer:getChildren()
     for _, child in ipairs(children) do
         child:setVisible(false)

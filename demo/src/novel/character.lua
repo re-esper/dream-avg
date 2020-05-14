@@ -185,28 +185,28 @@ end
 -- creator
 local function buildCharacter(params)
     local imageFile = params["image"]
-    local charactor, imageFileExt
+    local character, imageFileExt
     if imageFile then
         assert(FileUtils:isFileExist(imageFile), "Character construct failed: 'image' is invalid")
         imageFileExt = FileUtils:getFileExtension(imageFile)
     end
     if imageFileExt == ".json" then
         if string.find(imageFile, ".model3.json") then
-            charactor = Live2DCharacter:create(imageFile, params)
+            character = Live2DCharacter:create(imageFile, params)
         else
-            charactor = SpineCharacter:create(imageFile, params)
+            character = SpineCharacter:create(imageFile, params)
         end
     elseif imageFileExt == ".skel" then
-        charactor = SpineCharacter:create(imageFile, params)
+        character = SpineCharacter:create(imageFile, params)
     else
-        charactor = Character:create(params)
+        character = Character:create(params)
     end
-    charactor.show = Character_show
-    charactor._loadUserData = Character_loadUserData
-    charactor._serialize = Character_serialize
-    charactor._reset = Character_reset
-    charactor:retain()
-    return charactor
+    character.show = Character_show
+    character._loadUserData = Character_loadUserData
+    character._serialize = Character_serialize
+    character._reset = Character_reset
+    character:retain()
+    return character
 end
 
 -- default narrator

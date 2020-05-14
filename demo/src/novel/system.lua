@@ -102,7 +102,7 @@ end
 --[[
     story scripts execution:
     novel._currentVariableTable { k1 = true, k2 = true, ... }
-    novel._currentContext       { variables = {}, charactors = {} }
+    novel._currentContext       { variables = {}, characters = {} }
     novel._currentScript
     novel._currentLine
     novel._userInputs
@@ -112,7 +112,7 @@ local function _makeStoryScriptContext()
     local context = {}
     context["seed"] = novel._randomSeed
     local variables = {}
-    local charactors = {}
+    local characters = {}
     for k, _ in pairs(novel._currentVariableTable) do
         local v = rawget(_G, k)
         local vt = type(v)
@@ -120,11 +120,11 @@ local function _makeStoryScriptContext()
             variables[k] = clone(v)
         elseif _isCharacter(v) then
             v:_reset()
-            charactors[k] = v:_serialize()
+            characters[k] = v:_serialize()
         end
     end
     context["variables"] = variables
-    context["charactors"] = charactors
+    context["characters"] = characters
     novel._currentContext = context
 end
 local function _loadStoryScriptContext(context)
@@ -135,8 +135,8 @@ local function _loadStoryScriptContext(context)
         variableTable[k] = true
         rawset(_G, k, clone(v))
     end
-    local charactors = context["charactors"]
-    for k, v in pairs(charactors) do
+    local characters = context["characters"]
+    for k, v in pairs(characters) do
         variableTable[k] = true
         local c = Character(v["params"])
         c:_loadUserData(v["userdata"])
