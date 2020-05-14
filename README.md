@@ -19,8 +19,7 @@ else
 end
 ```
 
-虽然dream-avg的剧本格式和renpy等传统galgame引擎很相似, 但其实它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码
-
+虽然dream-avg的剧本格式和renpy等传统galgame引擎很相似, 但其实它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码  
 因此, 你可以不受限制的在剧本中使用lua和cocos2d-x已有内容, 例如: dream-avg并不需要其他引擎那样的label和jump, 直接使用lua语句if/while/for等就可以了
 
 ## TechDemo
@@ -35,9 +34,9 @@ end
 - 提供AVG/galgame所需的完整功能
 - 易于使用剧本语法, 剧本命令和lua脚本语言无缝衔接
 - 可扩展性, cocos2d-x功能, ui系统/action动画/粒子/shader等, 可随意使用; 扩展功能即等同扩展cocos2d-x-lua, 无额外成本
-- 跨平台, 支持windows/android/iOS/mac/linux, 因基于cocos2d-x引擎, 对android和iOS支持良好, 对不同分辨率设备的自动适配良好
+- 跨平台, 支持windows/android/iOS/mac/linux, 对移动设备支持良好, 自动适配不同分辨率
 - 引擎提供的Character对象原生支持live2d和spine模型
-- Small codebase, 引擎lua代码只有不足800行, 必要的对cocos2d-x修改也仅有UIRichText处的一点点, 因此也适合作为其他类型游戏的剧情模块使用
+- Small codebase, 引擎lua代码只有不足800行, 也适合作为其他类型游戏的剧情模块使用
 
 ## 简介
 
@@ -65,8 +64,8 @@ wait命令可以等待时间也可以等待一个条件成立
 
 ### 注意事项
 
-1. 在可于剧本内任意使用lua和cocos2d-x的前提下, 引擎也能保证存读档的结果正确, 但由于读档机制特殊, 单个剧本文件最好不要太长
-2. 在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考Choice的实现方式, 在整个过程的前后分别调用novel._preUserInput/novel._postUserInput
+在可于剧本内任意使用lua和cocos2d-x的前提下, 引擎也能保证存读档的结果正确, 但由于读档机制特殊, 单个剧本文件最好不要太长  
+在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考Choice的实现方式, 在整个过程的前后分别调用novel._preUserInput/novel._postUserInput
 
 
 
