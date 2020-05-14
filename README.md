@@ -32,6 +32,8 @@ end
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_3.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_5.jpg" width="40%" height="40%">
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_6.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_7.jpg" width="40%" height="40%">
 
+    [Credits](https://github.com/re-esper/dream-avg/tree/master/engine)
+
 ## 特性
 
 - 提供AVG/galgame所需的完整功能
