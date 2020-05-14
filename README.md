@@ -20,7 +20,7 @@ else
 end
 ```
 
-虽然dream-avg的剧本格式和renpy等传统galgame引擎相似, 但它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码
+虽然dream-avg的剧本格式和[Ren'Py](https://github.com/renpy/renpy)等传统galgame引擎相似, 但它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码
 
 因此, 你可以不受限制的在剧本中使用lua和cocos2d-x已有内容, 例如: dream-avg并不需要其他引擎那样的label和jump, 直接使用lua语句if/while/for等就可以了
 
