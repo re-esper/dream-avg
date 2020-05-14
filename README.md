@@ -15,7 +15,7 @@ if Choice { "确实……不能说没有。", "鬼才会有。" } == 1 then
 else
     我 "鬼才会有。"
     舞.image = "舞_制服_生气1.png"
-    舞 "咦咦咦~~~明明就很有意思耶~~\n……来，这一段你看一下嘛。"    
+    舞 "voice/mai_01.ogg" "咦咦咦~~~明明就很有意思耶~~\n……来，这一段你看一下嘛。"    
 end
 ```
 
@@ -30,11 +30,11 @@ end
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_1.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_2.jpg" width="40%" height="40%">
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_3.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_5.jpg" width="40%" height="40%">
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_6.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_7.jpg" width="40%" height="40%">
+
 ## 特性
 
 - 提供AVG/galgame所需的完整功能
 - 易于使用剧本语法, 剧本命令和lua脚本语言无缝衔接
-- 可扩展性, cocos2d-x功能, ui系统/action动画/粒子/shader等, 可随意使用; 扩展功能即等同扩展cocos2d-x-lua, 无额外成本
 - 跨平台, 支持windows/android/iOS/mac/linux, 对移动设备支持良好, 自动适配不同分辨率
 - 引擎提供的Character对象原生支持live2d和spine模型
 - Small codebase, 引擎lua代码只有不足800行, 也适合作为其他类型游戏的剧情模块使用
@@ -52,8 +52,8 @@ end
 
 #### 文本
 
-文本支持就地嵌入标签控制, 包括fontname/size/color/style等, 也支持嵌入图片, 请参考framework/extends/richtextex.lua中的注释  
-文本也支持javascript风格的模板字符串 
+文本支持就地嵌入标签控制, 包括fontname/size/color/style等, 也支持标签插入图片甚至自定义控件, 请参考framework/extends/richtextex.lua中的注释  
+文本也支持javascript风格的模板字符串
 
 #### 转场
 
