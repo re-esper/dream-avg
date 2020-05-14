@@ -37,7 +37,7 @@ end
 ## 特性
 
 - 提供AVG/galgame所需的完整功能
-- 易于使用剧本语法, 剧本命令和lua脚本语言无缝衔接
+- 易于使用的语法, 剧本命令和lua脚本语言无缝衔接
 - 跨平台, 支持windows/android/iOS/mac/linux, 对移动设备支持良好, 自动适配不同分辨率
 - 引擎提供的Character对象原生支持live2d和spine模型
 - Small codebase, 引擎lua代码只有不足800行, 也适合作为其他类型游戏的剧情模块使用
@@ -45,7 +45,7 @@ end
 ## 简介
 
 暂无文档, 可能永远不会有, 细节请自行阅读源码了解, 也欢迎在issue提问  
-但这里还是做些简单的提示性介绍, 另外也请参考TechDemo里面的剧本文件
+但这里还是做些简单的提示性介绍, 另外也请参考TechDemo里面的[剧本文件](https://github.com/re-esper/dream-avg/tree/master/demo/src/storyScript)
 
 #### 角色
 
@@ -55,12 +55,12 @@ end
 
 #### 文本
 
-文本支持就地嵌入标签控制, 包括fontname/size/color/style等, 也支持标签插入图片甚至自定义控件, 请参考framework/extends/richtextex.lua中的注释  
+文本支持就地嵌入标签控制, 包括fontname/size/color/style等, 也支持标签插入图片甚至自定义控件, 请参考[framework/extends/richtextex.lua](https://github.com/re-esper/cocos2d-lua-framework/blob/master/framework/extends/richtextex.lua)中的注释  
 文本也支持javascript风格的模板字符串
 
 #### 转场
 
-在不同的剧本文件切换可以加入转场特效, 请参考framework/extends/scene.lua中的定义
+在不同的剧本文件切换可以加入转场特效, 请参考[framework/extends/scene.lua](https://github.com/re-esper/cocos2d-lua-framework/blob/master/framework/extends/scene.lua)中的定义
 
 #### 等待
 
@@ -68,7 +68,7 @@ wait命令可以等待时间也可以等待一个条件成立
 
 #### 注意事项
 
-在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考Choice的实现方式, 在整个过程的前后分别调用novel._preUserInput/novel._postUserInput
+在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考 `Choice` 的实现方式, 在整个过程的前后分别调用`novel._preUserInput` / `novel._postUserInput`
 
 
 
