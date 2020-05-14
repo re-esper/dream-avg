@@ -7,6 +7,7 @@ A full-featured cross-platform visual novel/galgame engine base on cocos2d-x and
 background "校园_日.jpg"
 舞 = Character { name = "舞", image = "舞_制服1.png", x = 720, y = 96 }
 
+舞:show()
 舞 "勇太也有兴趣吧？"
 if Choice { "确实……不能说没有。", "鬼才会有。" } == 1 then
     舞.好感度 = 舞.好感度 + 20
@@ -65,7 +66,6 @@ wait命令可以等待时间也可以等待一个条件成立
 
 #### 注意事项
 
-在可于剧本内任意使用lua和cocos2d-x的前提下, 引擎也能保证存读档的结果正确, 但由于读档机制特殊, 单个剧本文件最好不要太长  
 在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考Choice的实现方式, 在整个过程的前后分别调用novel._preUserInput/novel._postUserInput
 
 
