@@ -32,7 +32,7 @@ end
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_3.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_5.jpg" width="40%" height="40%">
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_6.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_7.jpg" width="40%" height="40%">
 
-    [Credits](https://github.com/re-esper/dream-avg/tree/master/engine)
+[Credits](https://github.com/re-esper/dream-avg/tree/master/engine)
 
 ## 特性
 
@@ -44,8 +44,8 @@ end
 
 ## 简介
 
-  暂无文档, 可能永远不会有, 细节请自行阅读源码了解, 也欢迎在issue提问  
-  但这里还是做些简单的提示性介绍, 另外也请参考TechDemo里面的剧本文件
+暂无文档, 可能永远不会有, 细节请自行阅读源码了解, 也欢迎在issue提问  
+但这里还是做些简单的提示性介绍, 另外也请参考TechDemo里面的剧本文件
 
 #### 角色
 
