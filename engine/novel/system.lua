@@ -125,7 +125,6 @@ local function _makeStoryScriptContext()
     end
     context["variables"] = variables
     context["characters"] = characters
-    dump(context)
     novel._currentContext = context
 end
 local function _loadStoryScriptContext(context)
@@ -191,8 +190,6 @@ function novel._executeStoryScript(params)
     novel._currentCoroutine = routine.execute(function()
         print("coroutine start @ " .. novel._currentScript)
         xpcall(code, __G__TRACKBACK__)
-        dump(novel._currentVariableTable)
-        dump(novel._currentContext)
         novel._currentCoroutine = nil
         setmetatable(_G, novel._metatableG)
         print("coroutine finished")
