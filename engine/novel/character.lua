@@ -2,7 +2,7 @@ local function _handleTemplateLiterals(str)
     local prev, idx = 1, 1
     local r = ""
     while true do
-        local sidx, eidx, expression = string.find(str, "${(.-)}", idx)
+        local sidx, eidx, expression = string.find(str, "${(.+)}", idx)
         if not sidx then
             r = r .. string.sub(str, prev)
             break
@@ -60,50 +60,7 @@ local function Character_newindex(self, peer, key, val)
         rawset(peer, key, val)
     end
 end
-local function Character_initialize(self, params)
-    self._parts = {}
-    self._params = params -- readonly
-    local mt = getmetatable(self)
-    mt.__call = Character_call
-    local peer_mt = getmetatable(tolua.getpeer(self))
-    peer_mt.__newindex = function(t, key, val) return Character_newindex(self, t, key, val) end
-    for k, v in pairs(params) do
-        if k == "image" then
-            -- handle this in constructor
-        elseif k == "name" then
-            self.name = v
-        elseif k == "x" then
-            self:setPositionX(v)
-        elseif k == "y" then
-            self:setPositionY(v)
-        elseif k == "scale" then
-            self:setScale(v)
-        elseif k == "parts" then
-            for name, t in pairs(v) do
-                local subspr = cc.Sprite:create():addTo(self)
-                self._parts[name] = subspr
-                for prop, propv in pairs(t) do
-                    if prop == "file" then
-                        subspr._defaultImage = propv
-                        subspr:frame(propv)
-                    elseif prop == "x" then
-                        subspr:setPositionX(propv)
-                    elseif prop == "y" then
-                        subspr:setPositionY(propv)
-                    elseif prop == "scale" then
-                        subspr:setScale(propv)
-                    elseif prop == "anchor" then
-                        subspr:setAnchorPoint(unpack(propv))
-                    end
-                end
-            end
-        else
-            self[k] = v
-        end
-    end
-    self:setCascadeOpacityEnabled(true)
-    self:setCascadeColorEnabled(true)
-end
+
 local function Character_loadUserData(self, userData)
     local peer = tolua.getpeer(self)
     for k, v in pairs(userData) do
@@ -141,10 +98,62 @@ local function Character_show(self, imageFile)
     self:setVisible(true)
 end
 
+local function Character_initialize(self, params)
+    self._userDataTable = {}
+    self._parts = {}
+    self._params = params -- readonly
+
+    self.show = Character_show
+    self._loadUserData = Character_loadUserData
+    self._serialize = Character_serialize
+    self._reset = Character_reset
+
+    local mt = getmetatable(self)
+    mt.__call = Character_call
+    local peer_mt = getmetatable(tolua.getpeer(self))
+    peer_mt.__newindex = function(t, key, val) return Character_newindex(self, t, key, val) end
+
+    for k, v in pairs(params) do
+        if k == "image" then
+            -- handle this in constructor
+        elseif k == "name" then
+            self.name = v
+        elseif k == "x" then
+            self:setPositionX(v)
+        elseif k == "y" then
+            self:setPositionY(v)
+        elseif k == "scale" then
+            self:setScale(v)
+        elseif k == "parts" then
+            for name, t in pairs(v) do
+                local subspr = cc.Sprite:create():addTo(self)
+                self._parts[name] = subspr
+                for prop, propv in pairs(t) do
+                    if prop == "file" then
+                        subspr._defaultImage = propv
+                        subspr:frame(propv)
+                    elseif prop == "x" then
+                        subspr:setPositionX(propv)
+                    elseif prop == "y" then
+                        subspr:setPositionY(propv)
+                    elseif prop == "scale" then
+                        subspr:setScale(propv)
+                    elseif prop == "anchor" then
+                        subspr:setAnchorPoint(unpack(propv))
+                    end
+                end
+            end
+        else
+            self[k] = v
+        end
+    end
+    self:setCascadeOpacityEnabled(true)
+    self:setCascadeColorEnabled(true)
+end
+
 -- normal Character inherit from cc.Sprite
 local Character = class("Character", cc.Sprite)
 function Character:ctor(params)
-    self._userDataTable = {}
     self._defaultImage = params["image"]
     Character_initialize(self, params)
     self.image = self._defaultImage
@@ -177,7 +186,6 @@ local SpineCharacter = class("SpineCharacter", function(modelFile)
     end
 end)
 function SpineCharacter:ctor(modelFile, params)
-    self._userDataTable = {}
     Character_initialize(self, params)
 end
 function SpineCharacter:_loadContent(imageFile)
@@ -201,10 +209,6 @@ local function buildCharacter(params)
     else
         character = Character:create(params)
     end
-    character.show = Character_show
-    character._loadUserData = Character_loadUserData
-    character._serialize = Character_serialize
-    character._reset = Character_reset
     character:retain()
     return character
 end
