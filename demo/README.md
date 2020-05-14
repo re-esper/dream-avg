@@ -1,12 +1,12 @@
 ## Credits
 
-#### Í¼Ïñ
-´ËdemoµÄËùÓÐÍ¼ÏñËØ²ÄÀ´Ô´ÓÚÍøÂç, ½ö×÷Îª¼¼ÊõÑÝÊ¾Ê¹ÓÃ
-³ö×ÔÓÎÏ·: Ç§Áµ*Íò»¨, ¥ª¥È¥á£ª¥É¥á¥¤¥ó, —@¤Ò¤È¤Ò¤éÁµ¤â¤è¤¦
+#### å›¾åƒ
+æ­¤demoçš„æ‰€æœ‰å›¾åƒç´ ææ¥æºäºŽç½‘ç»œ, ä»…ä½œä¸ºæŠ€æœ¯æ¼”ç¤ºä½¿ç”¨
+å‡ºè‡ªæ¸¸æˆ: åƒæ‹*ä¸‡èŠ±, ã‚ªãƒˆãƒ¡ï¼Šãƒ‰ãƒ¡ã‚¤ãƒ³, æ¡œã²ã¨ã²ã‚‰æ‹ã‚‚ã‚ˆã†
 
-#### ÒôÉù
-Á½Ö»bgmÀ´×Ô [¸Ê²è¤ÎÒô˜S¹¤·¿](https://amachamusic.chagasi.com/)
-ÓïÒôÓÉVOICEROID2 –|±±¥¤¥¿¥³ÔÚÏßÉú³É
+#### éŸ³å£°
+ä¸¤åªbgmæ¥è‡ª [ç”˜èŒ¶ã®éŸ³æ¥½å·¥æˆ¿](https://amachamusic.chagasi.com/)
+è¯­éŸ³ç”±VOICEROID2 æ±åŒ—ã‚¤ã‚¿ã‚³åœ¨çº¿ç”Ÿæˆ
 
 
 
