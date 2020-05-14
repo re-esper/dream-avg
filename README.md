@@ -19,7 +19,8 @@ else
 end
 ```
 
-虽然dream-avg的剧本格式和renpy等传统galgame引擎很相似, 但其实它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码  
+虽然dream-avg的剧本格式和renpy等传统galgame引擎相似, 但其实它并非一种DSL, 而是跑在cocos2d-x环境下的标准lua代码
+
 因此, 你可以不受限制的在剧本中使用lua和cocos2d-x已有内容, 例如: dream-avg并不需要其他引擎那样的label和jump, 直接使用lua语句if/while/for等就可以了
 
 ## TechDemo
@@ -43,29 +44,32 @@ end
   暂无文档, 可能永远不会有, 细节请自行阅读源码了解, 也欢迎在issue提问  
   但这里还是做些简单的提示性介绍, 另外也请参考TechDemo里面的剧本文件
 
-### 角色
+#### 角色
 
 角色Character支持单图片, 多层图片(使用parts字段定义部件), live2d模型(需要添加库[cocos-live2d-sprite](https://github.com/re-esper/cocos-live2d-sprite)), spine模型  
 每个Character对象自身就是1个cc.Sprite (或cc.Live2DSprite/sp.SkeletonAnimation), 可以对其调用任何cocos2d-x相关功能接口, 例如action动画, shader等  
 也可以直接在Character对象上绑定任意数据, 例如上面的好感度, 支持复杂lua table数据
 
-### 文本
+#### 文本
 
 文本支持就地嵌入标签控制, 包括fontname/size/color/style等, 也支持嵌入图片, 请参考framework/extends/richtextex.lua中的注释  
 文本也支持javascript风格的模板字符串 
 
-### 转场
+#### 转场
 
 在不同的剧本文件切换可以加入转场特效, 请参考framework/extends/scene.lua中的定义
 
-### 等待
+#### 等待
 
 wait命令可以等待时间也可以等待一个条件成立
 
-### 注意事项
+#### 注意事项
 
 在可于剧本内任意使用lua和cocos2d-x的前提下, 引擎也能保证存读档的结果正确, 但由于读档机制特殊, 单个剧本文件最好不要太长  
 在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考Choice的实现方式, 在整个过程的前后分别调用novel._preUserInput/novel._postUserInput
+
+
+
 
 
 
