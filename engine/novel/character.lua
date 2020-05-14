@@ -168,7 +168,6 @@ local Live2DCharacter = class("Live2DCharacter", function(modelFile)
     return cc.Live2DSprite:create(modelFile)
 end)
 function Live2DCharacter:ctor(modelFile, params)
-    self._userDataTable = {}
     Character_initialize(self, params)
 end
 function Live2DCharacter:_loadContent(imageFile)
