@@ -1,9 +1,9 @@
 -- main character, without figure
-我 = Charactor {
+我 = Character {
     name = "我"
 }
 -- heroine 2, 常陆 花恋
-花恋 = Charactor {
+花恋 = Character {
     image = "花恋_制服1.png",
     name = "花恋",
     x = 720,

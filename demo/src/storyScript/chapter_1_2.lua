@@ -2,7 +2,7 @@ background "教室_日.jpg"
 bgm "bgm/bgm01.mp3"
 
 -- heroine 3, 桃濑 舞
-舞 = Charactor {
+舞 = Character {
     image = "live2d/Hiyori.model3.json", -- live2d模型需要.model3.json结尾, 以和spine模型区分
     name = "舞",
     x = 920,
@@ -46,7 +46,7 @@ sound("sound/class_chime.ogg", 2)
 _ "盖过一切杂音的下课铃声在校内响起。"
 sound("", 1, 1.0) -- 黑板音(channel 1) fade out
 _ "同时教师也已经写完板书，转身面对学生。"
-local 教师 = Charactor { name = "教师" }
+local 教师 = Character { name = "教师" }
 教师 "那么就到这里结束。起立！"
 _ "学生们迫不及待自座位上站起，在对老师行礼后气氛瞬间沸腾，仿佛在说我们的暑假从这一刻真正开始啦。"
 sound("", 2, 2.0)

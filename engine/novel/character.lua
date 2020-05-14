@@ -16,7 +16,7 @@ local function _handleTemplateLiterals(str)
     end
     return r
 end
-local function Charactor_call(self, text)
+local function Character_call(self, text)
     local skip = novel._preScriptCommand()
     if skip then return self end
     if FileUtils:isFileExist(text) then -- play voice
@@ -47,7 +47,7 @@ local function Charactor_call(self, text)
     novel._textObject:clear()
     audio:stopEffect(const.DEFAULT_VOICE_CHANNEL, const.DEFAULT_VOICE_FADEOUT) -- stop the voice of playing
 end
-local function Charactor_newindex(self, peer, key, val)
+local function Character_newindex(self, peer, key, val)
     if key == "image" then
         val = val ~= "" and val or self._defaultImage
         self:_loadContent(val)
@@ -60,13 +60,13 @@ local function Charactor_newindex(self, peer, key, val)
         rawset(peer, key, val)
     end
 end
-local function Charactor_initialize(self, params)
+local function Character_initialize(self, params)
     self._parts = {}
     self._params = params -- readonly
     local mt = getmetatable(self)
-    mt.__call = Charactor_call
+    mt.__call = Character_call
     local peer_mt = getmetatable(tolua.getpeer(self))
-    peer_mt.__newindex = function(t, key, val) return Charactor_newindex(self, t, key, val) end
+    peer_mt.__newindex = function(t, key, val) return Character_newindex(self, t, key, val) end
     for k, v in pairs(params) do
         if k == "image" then
             -- handle this in constructor
@@ -104,14 +104,14 @@ local function Charactor_initialize(self, params)
     self:setCascadeOpacityEnabled(true)
     self:setCascadeColorEnabled(true)
 end
-local function Charactor_loadUserData(self, userData)
+local function Character_loadUserData(self, userData)
     local peer = tolua.getpeer(self)
     for k, v in pairs(userData) do
         self._userDataTable[k] = true
         rawset(peer, k, clone(v))
     end
 end
-local function Charactor_serialize(self)
+local function Character_serialize(self)
     local peer = tolua.getpeer(self)
     local userData = {}
     for k, _ in pairs(self._userDataTable) do
@@ -122,7 +122,7 @@ local function Charactor_serialize(self)
         userdata = userData
     }
 end
-local function Charactor_reset(self) -- reset for new scene
+local function Character_reset(self) -- reset for new scene
     local params = self._params
     self:setPositionX(params["x"] or video.center.x)
     self:setPositionY(params["y"] or 0)
@@ -131,7 +131,7 @@ local function Charactor_reset(self) -- reset for new scene
         self:_loadContent(self._defaultImage)
     end
 end
-local function Charactor_show(self, imageFile)
+local function Character_show(self, imageFile)
     if imageFile then
         self.image = imageFile
     end
@@ -141,32 +141,32 @@ local function Charactor_show(self, imageFile)
     self:setVisible(true)
 end
 
--- normal Charactor inherit from cc.Sprite
-local Charactor = class("Charactor", cc.Sprite)
-function Charactor:ctor(params)
+-- normal Character inherit from cc.Sprite
+local Character = class("Character", cc.Sprite)
+function Character:ctor(params)
     self._userDataTable = {}
     self._defaultImage = params["image"]
-    Charactor_initialize(self, params)
+    Character_initialize(self, params)
     self.image = self._defaultImage
 end
-function Charactor:_loadContent(imageFile)
+function Character:_loadContent(imageFile)
     if imageFile and imageFile ~= "" then
         self:frame(imageFile)
     end
 end
--- live2d Charactor inherit from cc.Live2DSprite
-local Live2DCharactor = class("Live2DCharactor", function(modelFile)
+-- live2d Character inherit from cc.Live2DSprite
+local Live2DCharacter = class("Live2DCharacter", function(modelFile)
     return cc.Live2DSprite:create(modelFile)
 end)
-function Live2DCharactor:ctor(modelFile, params)
+function Live2DCharacter:ctor(modelFile, params)
     self._userDataTable = {}
-    Charactor_initialize(self, params)
+    Character_initialize(self, params)
 end
-function Live2DCharactor:_loadContent(imageFile)
+function Live2DCharacter:_loadContent(imageFile)
     -- do nothing, can't change model on fly
 end
--- spine Charactor inherit from sp.SkeletonAnimation
-local SpineCharactor = class("SpineCharactor", function(modelFile)
+-- spine Character inherit from sp.SkeletonAnimation
+local SpineCharacter = class("SpineCharacter", function(modelFile)
     local ext = FileUtils:getFileExtension(imageFile)
     if ext == ".json" then
         local atlasFile = string.gsub(modelFile, ".json", ".atlas")
@@ -176,41 +176,41 @@ local SpineCharactor = class("SpineCharactor", function(modelFile)
         return sp.SkeletonAnimation:createWithBinaryFile(modelFile, atlasFile)
     end
 end)
-function SpineCharactor:ctor(modelFile, params)
+function SpineCharacter:ctor(modelFile, params)
     self._userDataTable = {}
-    Charactor_initialize(self, params)
+    Character_initialize(self, params)
 end
-function SpineCharactor:_loadContent(imageFile)
+function SpineCharacter:_loadContent(imageFile)
 end
 -- creator
-local function buildCharactor(params)
+local function buildCharacter(params)
     local imageFile = params["image"]
     local charactor, imageFileExt
     if imageFile then
-        assert(FileUtils:isFileExist(imageFile), "Charactor construct failed: 'image' is invalid")
+        assert(FileUtils:isFileExist(imageFile), "Character construct failed: 'image' is invalid")
         imageFileExt = FileUtils:getFileExtension(imageFile)
     end
     if imageFileExt == ".json" then
         if string.find(imageFile, ".model3.json") then
-            charactor = Live2DCharactor:create(imageFile, params)
+            charactor = Live2DCharacter:create(imageFile, params)
         else
-            charactor = SpineCharactor:create(imageFile, params)
+            charactor = SpineCharacter:create(imageFile, params)
         end
     elseif imageFileExt == ".skel" then
-        charactor = SpineCharactor:create(imageFile, params)
+        charactor = SpineCharacter:create(imageFile, params)
     else
-        charactor = Charactor:create(params)
+        charactor = Character:create(params)
     end
-    charactor.show = Charactor_show
-    charactor._loadUserData = Charactor_loadUserData
-    charactor._serialize = Charactor_serialize
-    charactor._reset = Charactor_reset
+    charactor.show = Character_show
+    charactor._loadUserData = Character_loadUserData
+    charactor._serialize = Character_serialize
+    charactor._reset = Character_reset
     charactor:retain()
     return charactor
 end
 
 -- default narrator
-local narrator = Charactor:create({ name = "" })
+local narrator = Character:create({ name = "" })
 export("_", narrator)
--- 'Charactor' interface
-export("Charactor", buildCharactor)
+-- 'Character' interface
+export("Character", buildCharacter)

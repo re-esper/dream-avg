@@ -1,9 +1,9 @@
 local novel = {}
 
 -- initialize
-local function _isCharactor(obj)
+local function _isCharacter(obj)
     local c = obj.__cname
-    return c == "Charactor" or c == "Live2DCharactor" or c == "SpineCharactor"
+    return c == "Character" or c == "Live2DCharacter" or c == "SpineCharacter"
 end
 function novel.initialize()
     novel.reset()
@@ -14,7 +14,7 @@ function novel.initialize()
                 local vt = type(v)
                 if vt == "number" or vt == "string" or vt == "boolean" or vt == "table" then -- TODO: deep checking
                     variableTable[k] = true
-                elseif _isCharactor(v) then
+                elseif _isCharacter(v) then
                     variableTable[k] = true
                 end
             elseif v == nil then
@@ -118,7 +118,7 @@ local function _makeStoryScriptContext()
         local vt = type(v)
         if vt == "number" or vt == "string" or vt == "boolean" or vt == "table" then -- TODO: deep checking
             variables[k] = clone(v)
-        elseif _isCharactor(v) then
+        elseif _isCharacter(v) then
             v:_reset()
             charactors[k] = v:_serialize()
         end
@@ -138,7 +138,7 @@ local function _loadStoryScriptContext(context)
     local charactors = context["charactors"]
     for k, v in pairs(charactors) do
         variableTable[k] = true
-        local c = Charactor(v["params"])
+        local c = Character(v["params"])
         c:_loadUserData(v["userdata"])
         rawset(_G, k, c)
     end
