@@ -59,6 +59,7 @@ function novel.saveGame(filePath)
     data["script"] = novel._currentScript
     data["context"] = novel._currentContext
     data["line"] = novel._currentLine
+    data["fallbacks"] = novel._currentFallbacks
     data["userInputs"] = novel._userInputs
     data["fileTime"] = os.time()
     local code = loadstring("return " .. table.tostring(data, true))
@@ -105,8 +106,10 @@ end
     novel._currentContext       { variables = {}, characters = {} }
     novel._currentScript
     novel._currentLine
+    novel._currentFallbacks
     novel._userInputs
     novel._skipToLine
+    novel._skipToFallbacks
 ]]
 local function _makeStoryScriptContext()
     local context = {}
@@ -181,6 +184,7 @@ function novel._executeStoryScript(params)
         code = util.loadCode(const.STORY_SCRIPT_DIRECTORY .. "/" .. data["script"])
         novel._currentScript = data["script"]
         novel._skipToLine = data["line"]
+        novel._skipToFallbacks = data["fallbacks"]
         novel._userInputs = data["userInputs"]
         _loadStoryScriptContext(data["context"])
         _preLoadGame()
@@ -189,6 +193,8 @@ function novel._executeStoryScript(params)
     setmetatable(_G, novel._metatableNovelG)
     novel._currentCoroutine = routine.execute(function()
         print("coroutine start @ " .. novel._currentScript)
+        novel._currentLine = 0
+        novel._currentFallbacks = 0
         xpcall(code, __G__TRACKBACK__)
         novel._currentCoroutine = nil
         setmetatable(_G, novel._metatableG)
@@ -200,14 +206,18 @@ end
 function novel._preScriptCommand()
     local dbginfo = debug.getinfo(3) -- 1 - here, 2 - caller, 3 - storyScript
     local currentline = dbginfo.currentline
+    if currentline <= novel._currentLine then -- backward occurs
+        novel._currentFallbacks = novel._currentFallbacks + 1
+    end
     novel._currentLine = currentline
     if novel._skipToLine then
-        assert(currentline <= novel._skipToLine, "load game failed, story script '" .. dbginfo.source .. "' has changed?")
-        if currentline < novel._skipToLine then
+        assert(novel._currentFallbacks <= novel._skipToFallbacks, "load game failed, story script '" .. dbginfo.source .. "' has changed?")
+        if currentline < novel._skipToLine or novel._currentFallbacks < novel._skipToFallbacks then
             return true
         end
         -- skipping is done!
         novel._skipToLine = nil
+        novel._skipToFallbacks = nil
         _postLoadGame()
     end
     return false
