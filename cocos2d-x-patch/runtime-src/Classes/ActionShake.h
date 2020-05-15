@@ -69,7 +69,7 @@ protected:
             p[i] = i;
 
             float Bf = static_cast<float>(B);
-            float rand = random();
+            float rand = cocos2d::random();
             g1[i] = static_cast<float>((static_cast<int>(rand) % (B + B)) - B) / Bf;
 
             //for (j = 0 ; j < 2 ; j++)
@@ -83,7 +83,7 @@ protected:
 
         while (--i) {
             k = p[i];
-            p[i] = p[j = random() % B];
+            p[i] = p[j = cocos2d::random() % B];
             p[j] = k;
         }
 

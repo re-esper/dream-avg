@@ -37,7 +37,7 @@
 #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
-// #define USE_LIVE2D_SPRITE 1
+#define USE_LIVE2D_SPRITE 1
 
 #if USE_LIVE2D_SPRITE
 #include "Live2DSprite.h"
@@ -211,7 +211,7 @@ void AppDelegate::processCommandLine()
                 }
             }
             else if (arg.compare("--fullscreen") == 0) {
-                lua_pushboolean(L, TRUE);
+                lua_pushboolean(L, 1);
                 lua_setfield(L, -2, "fullscreen");
             }
             else if (arg.compare("--console") == 0) {
