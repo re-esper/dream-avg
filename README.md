@@ -26,7 +26,7 @@ end
 
 ## TechDemo
 
-桜花恋舞 ([Windows版](https://github.com/re-esper/dream-avg/releases/download/0.1/techdemo-sakumai-windows.zip)   Android版)
+桜花恋舞 ([Windows版](https://github.com/re-esper/dream-avg/releases/download/0.1/sakumai-windows.zip)   [Android版](https://github.com/re-esper/dream-avg/releases/download/0.1/Sakumai-release-signed.apk))
 
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_1.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_2.jpg" width="40%" height="40%">
 <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_3.jpg" width="40%" height="40%">        <img src="https://github.com/re-esper/dream-avg/blob/master/screenshot/demo_5.jpg" width="40%" height="40%">
