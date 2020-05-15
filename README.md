@@ -68,11 +68,6 @@ end
 
 #### 注意事项
 
-在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考 `Choice` 的实现方式, 在整个过程的前后分别调用novel._preUserInput/ novel._postUserInput
-
-
-
-
-
-
+在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考 `Choice` 的实现方式, 在整个过程的前后分别调用novel._preUserInput/ novel._postUserInput  
+若要将lua编译为字节码, 对于剧本文件需要保留调试信息(-bg), 其他lua源代码不受影响
 
