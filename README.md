@@ -40,7 +40,7 @@ end
 - 易于使用的语法, 剧本命令和lua脚本语言无缝衔接
 - 跨平台, 支持windows/android/iOS/mac/linux, 对移动设备支持良好, 自动适配不同分辨率
 - 引擎提供的Character对象原生支持live2d和spine模型
-- Small codebase, 引擎lua代码只有不足800行, 也适合作为其他类型游戏的剧情模块使用
+- Small codebase, 引擎lua代码只有不足**800**行, 也适合作为其他类型游戏的剧情模块使用
 
 ## 简介
 
@@ -69,5 +69,6 @@ end
 #### 注意事项
 
 在实现含用户输入的自定义UI时, 又或在剧本中插入一个子游戏时, 需要参考 `Choice` 的实现方式, 在整个过程的前后分别调用novel._preUserInput/ novel._postUserInput  
-若要将lua编译为字节码, 对于剧本文件需要保留调试信息(-bg), 其他lua源代码不受影响
+
+若要将lua编译为字节码, 对于剧本文件需要保留调试信息(-bg), 其他lua文件不受影响
 
