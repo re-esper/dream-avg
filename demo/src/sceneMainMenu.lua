@@ -75,9 +75,6 @@ function tick(dt)
     flowerEffect.updateFlowers()
 end
 
-function onTouch(touch, event)
-end
-
 function leave()
     flowerEffect.stop()
 end
