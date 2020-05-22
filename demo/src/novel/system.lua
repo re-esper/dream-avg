@@ -154,20 +154,18 @@ local function _preLoadGame()
     util.getLayer():setVisible(false)
 end
 local function _postLoadGame()
+    Scheduler:setTimeScale(1.0)
+    -- cocos2d-x的粒子系统实现不严谨(帧率不同emit会不一致), 这里只能手动修一下
+    local children = util.getLayer():getChildren() -- 默认粒子通过:addTo()添加
+    for _, child in ipairs(children) do
+        if tolua.iskindof(child, "cc.ParticleSystem") then
+            child:stop()
+            child:start()
+        end
+    end
+    util.getLayer():setVisible(true)
     audio:setMusicVolume(const.DEFAULT_BGM_VOLUME)
     audio:setEffectVolume(const.DEFAULT_SOUND_VOLUME)
-    util.getScene():performDelay(function()
-        Scheduler:setTimeScale(1.0)
-        -- cocos2d-x的粒子系统实现不严谨(帧率不同emit会不一致), 这里只能手动修一下
-        local children = util.getLayer():getChildren() -- 默认粒子通过:addTo()添加
-        for _, child in ipairs(children) do
-            if tolua.iskindof(child, "cc.ParticleSystem") then
-                child:stop()
-                child:start()
-            end
-        end
-        util.getLayer():setVisible(true)
-    end, 0.01)
 end
 
 function novel._executeStoryScript(params)
