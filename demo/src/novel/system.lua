@@ -58,8 +58,7 @@ function novel.saveGame(filePath)
     local data = {}
     data["script"] = novel._currentScript
     data["context"] = novel._currentContext
-    data["line"] = novel._currentLine
-    data["fallbacks"] = novel._currentFallbacks
+    data["steps"] = novel._currentSteps
     data["userInputs"] = novel._userInputs
     data["fileTime"] = os.time()
     local code = loadstring("return " .. table.tostring(data, true))
@@ -105,11 +104,9 @@ end
     novel._currentVariableTable { k1 = true, k2 = true, ... }
     novel._currentContext       { variables = {}, characters = {} }
     novel._currentScript
-    novel._currentLine
-    novel._currentFallbacks
+    novel._currentSteps
     novel._userInputs
-    novel._skipToLine
-    novel._skipToFallbacks
+    novel._skipToSteps
 ]]
 local function _makeStoryScriptContext()
     local context = {}
@@ -157,18 +154,20 @@ local function _preLoadGame()
     util.getLayer():setVisible(false)
 end
 local function _postLoadGame()
-    Scheduler:setTimeScale(1.0)
-    -- cocos2d-x的粒子系统实现不严谨(帧率不同emit会不一致), 这里只能手动修一下
-    local children = util.getLayer():getChildren() -- 默认粒子通过:addTo()添加
-    for _, child in ipairs(children) do
-        if tolua.iskindof(child, "cc.ParticleSystem") then
-            child:stop()
-            child:start()
-        end
-    end
     audio:setMusicVolume(const.DEFAULT_BGM_VOLUME)
     audio:setEffectVolume(const.DEFAULT_SOUND_VOLUME)
-    util.getLayer():setVisible(true)
+    util.getScene():performDelay(function()
+        Scheduler:setTimeScale(1.0)
+        -- cocos2d-x的粒子系统实现不严谨(帧率不同emit会不一致), 这里只能手动修一下
+        local children = util.getLayer():getChildren() -- 默认粒子通过:addTo()添加
+        for _, child in ipairs(children) do
+            if tolua.iskindof(child, "cc.ParticleSystem") then
+                child:stop()
+                child:start()
+            end
+        end
+        util.getLayer():setVisible(true)
+    end, 0.01)
 end
 
 function novel._executeStoryScript(params)
@@ -183,8 +182,7 @@ function novel._executeStoryScript(params)
         local data = util.loadCode(novel._savePath .. params["loadGame"])()
         code = util.loadCode(const.STORY_SCRIPT_DIRECTORY .. "/" .. data["script"])
         novel._currentScript = data["script"]
-        novel._skipToLine = data["line"]
-        novel._skipToFallbacks = data["fallbacks"]
+        novel._skipToSteps = data["steps"]
         novel._userInputs = data["userInputs"]
         _loadStoryScriptContext(data["context"])
         _preLoadGame()
@@ -193,8 +191,7 @@ function novel._executeStoryScript(params)
     setmetatable(_G, novel._metatableNovelG)
     novel._currentCoroutine = routine.execute(function()
         print("coroutine start @ " .. novel._currentScript)
-        novel._currentLine = 0
-        novel._currentFallbacks = 0
+        novel._currentSteps = 0
         xpcall(code, __G__TRACKBACK__)
         novel._currentCoroutine = nil
         setmetatable(_G, novel._metatableG)
@@ -204,30 +201,24 @@ end
 
 -- helpers for script commands
 function novel._preScriptCommand()
-    local dbginfo = debug.getinfo(3) -- 1 - here, 2 - caller, 3 - storyScript
-    local currentline = dbginfo.currentline
-    if currentline <= novel._currentLine then -- backward occurs
-        novel._currentFallbacks = novel._currentFallbacks + 1
-    end
-    novel._currentLine = currentline
-    if novel._skipToLine then
-        assert(novel._currentFallbacks <= novel._skipToFallbacks, "load game failed, story script '" .. dbginfo.source .. "' has changed?")
-        if currentline < novel._skipToLine or novel._currentFallbacks < novel._skipToFallbacks then
+    novel._currentSteps = novel._currentSteps + 1
+    if novel._skipToSteps then
+        assert(novel._currentSteps <= novel._skipToSteps, "load game failed, story script '" .. novel._currentScript .. "' has changed?")
+        if novel._currentSteps < novel._skipToSteps then
             return true
         end
         -- skipping is done!
-        novel._skipToLine = nil
-        novel._skipToFallbacks = nil
+        novel._skipToSteps = nil
         _postLoadGame()
     end
     return false
 end
 
 function novel._preUserInput(kind)
-    local dbginfo = debug.getinfo(3) -- 1 - here, 2 - caller, 3 - storyScript
-    if novel._skipToLine then
-        local result = novel._userInputs[kind .. dbginfo.currentline]
-        assert(result, "load game failed, story script '" .. dbginfo.source .. "' has changed?")
+    novel._currentSteps = novel._currentSteps + 1
+    if novel._skipToSteps then
+        local result = novel._userInputs[kind .. novel._currentSteps]
+        assert(result, "load game failed, story script '" .. novel._currentScript .. "' has changed?")
         return result
     end
     -- stop fast forward mode
@@ -237,8 +228,7 @@ function novel._preUserInput(kind)
 end
 
 function novel._postUserInput(kind, result)
-    local dbginfo = debug.getinfo(3) -- 1 - here, 2 - caller, 3 - storyScript
-    novel._userInputs[kind .. dbginfo.currentline] = result
+    novel._userInputs[kind .. novel._currentSteps] = result
 end
 
 -- LCG random number
