@@ -59,17 +59,17 @@ _ "少女哀怨的望着我，想说什么，却欲言又止。\n最终，她轻
 花恋 "sound/voice_karen_01.ogg" "可是，真的真的好想见你啊。" -- 语音+文字的方式
 花恋.image = "" -- 恢复默认立绘
 
-sound("sound/se_heart.mp3", 2, 0.3, true)
+sound("sound/se_heart.ogg", 2, 0.3, true)
 花恋:runAction(fadeTo { 1.0, 0.75 * 255 })
 _ "我竭尽全力地搜索着记忆，这．个．少．女．到底是谁，可无论如何都想不出分毫。"
 _ "我越是尽力思索，头就越发疼痛，就连意识也模糊起来。"
-sound("sound/se_heart.mp3", 3, 0.3, true)
+sound("sound/se_heart.ogg", 3, 0.3, true)
 _ "喉咙深处开始有想吐的感觉。\n随着心脏每次跳动，就像被刺到一样地头痛。\n头痛欲裂。"
 花恋:fadeOut(5.0)
 _ "少女也似乎渐渐消失了。"
 我 "（啊…呼啊…呼啊……）"
 我 "（为什么？！为什么啊？！……）"
-sound("sound/se_heart.mp3", 4, 0.3, true)
+sound("sound/se_heart.ogg", 4, 0.3, true)
 util.shakeScreen(2.0, 50, 50)
 我 "（<40>啊啊啊啊啊啊啊！！！！！！！<font>）"
 _ "………………"
