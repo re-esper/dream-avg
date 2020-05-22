@@ -73,24 +73,22 @@ function setup(data)
     local btnSave = ccui.Button:create("ingame/save.png", "ingame/save2.png"):anchor(0.5, 0):position(video.width - 505, 12):addTo(textNode)
     local uiSaveGame
     btnSave:addClickEventListener(function(sender)
-        if not uiSaveGame then
-            local UISaveGame = require "ui.saveGameUI"
-            uiSaveGame = UISaveGame:create(novel._backgroundFile):addTo(100)
-        else
-            uiSaveGame:setBackgroundImage(novel._backgroundFile)
+        if uiSaveGame then
+            uiSaveGame:removeFromParent()
         end
+        local UISaveGame = require "ui.saveGameUI"
+        uiSaveGame = UISaveGame:create(novel._backgroundFile):addTo(100)
         uiSaveGame:show()
     end)
     btnSave:enableMouseHover()
     local btnLoad = ccui.Button:create("ingame/load.png", "ingame/load2.png"):anchor(0.5, 0):position(video.width - 370, 12):addTo(textNode)
     local uiLoadGame
     btnLoad:addClickEventListener(function(sender)
-        if not uiLoadGame then
-            local UILoadGame = require "ui.loadGameUI"
-            uiLoadGame = UILoadGame:create(novel._backgroundFile):addTo(100)
-        else
-            uiLoadGame:setBackgroundImage(novel._backgroundFile)
+        if uiLoadGame then
+            uiLoadGame:removeFromParent()
         end
+        local UILoadGame = require "ui.loadGameUI"
+        uiLoadGame = UILoadGame:create(novel._backgroundFile):addTo(100)
         uiLoadGame:show()
     end)
     btnLoad:enableMouseHover()
